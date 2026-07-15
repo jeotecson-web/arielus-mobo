@@ -7,7 +7,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="icon" href="assets/logo-icon.png" type="image/png" sizes="32x32">
+<link rel="icon" href="assets/alt/logo-icon.png" type="image/png" sizes="32x32">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=IM+Fell+DW+Pica:ital@0;1&family=Instrument+Serif:ital@0;1&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Stack+Sans+Headline:wght@200..700&display=swap" rel="stylesheet">
 
 <style>
@@ -381,8 +381,16 @@
         justify-content: center;
         align-items: center;
         color: #007bff;
-        font-size: 24px;
-        font-weight: 700;
+    }
+
+    .service-icon svg {
+        width: 28px;
+        height: 28px;
+        stroke: #007bff;
+        fill: none;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
     }
 
     .service-card h3 {
@@ -563,7 +571,7 @@
 
 <nav class="glass">
     <a href="#" class="logo">
-        <img src="assets/logo-icon.png" alt="Arielus Secondary Logo" style="height: 25px; width: auto; margin-right: -7px;">
+        <img src="assets/alt/logo-icon.png" alt="Arielus Secondary Logo" style="height: 25px; width: auto; margin-right: -7px;">
         <img src="assets/new-logo.png" alt="Arielus Software Logo">
     </a>
     <div class="nav-links">
@@ -625,17 +633,34 @@
         </div>
         <div class="services-grid">
             <div class="service-card">
-                <div class="service-icon">🌐</div>
+                <div class="service-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="9"></circle>
+                        <path d="M3 12h18"></path>
+                        <path d="M12 3a14 14 0 0 1 0 18"></path>
+                        <path d="M12 3a14 14 0 0 0 0 18"></path>
+                    </svg>
+                </div>
                 <h3>Works Online & Offline</h3>
                 <p>Enjoy uninterrupted service and seamless operations even in low-connectivity areas.</p>
             </div>
             <div class="service-card">
-                <div class="service-icon">📱</div>
+                <div class="service-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="7" y="2" width="10" height="20" rx="2"></rect>
+                        <line x1="11" y1="18" x2="13" y2="18"></line>
+                    </svg>
+                </div>
                 <h3>Web & Android Responsive</h3>
                 <p>Accessible across devices, ensuring maximum reach and a fluid user experience.</p>
             </div>
             <div class="service-card">
-                <div class="service-icon">🔒</div>
+                <div class="service-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="5" y="11" width="14" height="10" rx="2"></rect>
+                        <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+                    </svg>
+                </div>
                 <h3>Secure & Scalable</h3>
                 <p>Built for businesses of all sizes, ensuring data protection and room for growth.</p>
             </div>

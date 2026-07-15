@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ArielusMOBO</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" href="assets/logo-icon.png" type="image/png" sizes="32x32">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=IM+Fell+DW+Pica:ital@0;1&family=Instrument+Serif:ital@0;1&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Stack+Sans+Headline:wght@200..700&display=swap" rel="stylesheet">
+
+<style>
+    /* CSS Reset and General Styles */
+
+    /* Removed the massive scroll-margin-top so sections align perfectly to the top */
+    section[id], footer[id] {
+        scroll-margin-top: 0px; 
+    }   
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', 'Inter', sans-serif;
+        scroll-behavior: smooth;
+    }
+
+    /* Required CSS Variables for Nav and Glassmorphism */
+    :root {
+        --glass-bg: rgba(255, 255, 255, 0.45);
+        --glass-border: rgba(255, 255, 255, 0.7);
+        --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        --text-main: #1d2b45;
+        --accent-blue: #3b82f6;
+    }
+
+    body {
+        color: #1a1a1a;
+        line-height: 1.6;
+        overflow-x: hidden;
+        background-color: #f7fbff;
+        background-image:
+            radial-gradient(at 10% 20%, rgba(224, 242, 255, 0.7) 0px, transparent 50%),
+            radial-gradient(at 80% 10%, rgba(186, 230, 255, 0.6) 0px, transparent 50%),
+            radial-gradient(at 50% 50%, rgba(130, 202, 255, 0.5) 0px, transparent 50%),
+            radial-gradient(at 20% 80%, rgba(186, 230, 255, 0.6) 0px, transparent 50%),
+            radial-gradient(at 90% 90%, rgba(224, 242, 255, 0.7) 0px, transparent 50%);
+        background-attachment: fixed;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+        transition: color 0.3s ease;
+    }
+
+    ul {
+        list-style: none;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        width: 100%;
+    }
+
+    /* Global Button Styles */
+    .btn {
+        display: inline-block;
+        padding: 12px 30px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        margin: 5px;
+    }
+
+    .btn-primary {
+        background-color: rgba(0, 123, 255, 0.65); 
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.4); 
+        box-shadow: 0 8px 32px 0 rgba(0, 123, 255, 0.2);
+    }
+
+    .btn-primary:hover {
+        background-color: rgba(0, 123, 255, 0.85);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px 0 rgba(0, 123, 255, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .btn-outline {
+        background-color: rgba(0, 123, 255, 0.1);
+        border: 1px solid rgba(0, 123, 255, 0.5);
+        color: #007bff;
+        box-shadow: 0 8px 32px 0 rgba(0, 123, 255, 0.05);
+    }
+
+    .btn-outline:hover {
+        background-color: rgba(0, 123, 255, 0.65);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        color: #fff;
+        box-shadow: 0 8px 32px 0 rgba(0, 123, 255, 0.2);
+    }
+
+    .glass {
+        background: var(--glass-bg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--glass-shadow);
+        border-radius: 24px;
+    }
+
+    /* Navigation */
+    nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 3rem;
+        margin: 0.5rem auto 1rem auto;
+        width: 95%;
+        max-width: 1300px;
+        position: fixed; 
+        top: 0.8rem;
+        left: 0;
+        right: 0;
+        z-index: 100;
+    }
+
+    .logo {
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: var(--text-main);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .logo img {
+        height: 25px; 
+        width: auto;
+        display: block;
+        object-fit: contain;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .nav-links a {
+        text-decoration: none;
+        color: var(--text-main);
+        font-weight: 600;
+        font-size: 0.90rem;
+        transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+        color: var(--accent-blue);
+    }
+
+    .nav-btn {
+        background: rgba(255, 255, 255, 0.5); 
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        color: var(--accent-blue);
+        padding: 0.6rem 1.5rem;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        white-space: nowrap;
+    }
+
+    .nav-btn:hover {
+        background: rgba(255, 255, 255, 0.8);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.9);
+    }
+
+    /* Hero Section */
+    .hero {
+        position: relative;
+        overflow: hidden;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding-top: 80px; 
+        background: linear-gradient(rgba(247, 251, 255, 0.20), rgba(247, 251, 255, 0.90)), 
+                    url('assets/hero-image.png') center/cover no-repeat;
+    }
+
+    .hero .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .hero-content {
+        flex: 1;
+        text-align: left;
+        max-width: 550px;
+        z-index: 2;
+    }
+
+    .hero-label {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #007bff;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .hero h1 {
+        font-size: 48px;
+        font-weight: 800;
+        line-height: 1.15;
+        margin-bottom: 20px;
+        letter-spacing: -1px;
+        color: #1a1a1a;
+        text-shadow: 0px 4px 20px rgba(255, 255, 255, 0.9); 
+    }
+
+    .hero p {
+        font-size: 18px;
+        color: #333; 
+        margin-bottom: 30px;
+        font-weight: 500;
+        text-shadow: 0px 2px 10px rgba(255, 255, 255, 0.9); 
+    }
+
+    .hero-content .btn {
+        margin: 5px 10px 5px 0; 
+    }
+
+    /* Overlapping Phones Hover Effect */
+    .hero-graphic-container {
+        flex: 1.2;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end; 
+        padding-right: 0px; 
+        align-items: center;
+        will-change: transform;
+        z-index: 1;
+    }
+
+    .hero-phones {
+        position: relative;
+        width: 100%;
+        height: 600px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        perspective: 1000px;
+        transform: translateX(40px); /* Pushes the entire phone cluster right */
+    }
+
+    .phone-mockup {
+        position: absolute;
+        width: 260px; /* Reduced from 320px to make them smaller */
+        height: auto;
+        background: transparent;
+        transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .phone-mockup img {
+        width: 100%;
+        height: auto;
+        display: block;
+        object-fit: contain;
+        pointer-events: none; 
+    }
+
+    /* Adjusted coordinates to shift them further right internally as well */
+    .phone-back {
+        transform: translateX(-40px) scale(0.9);
+        z-index: 1;
+        filter: drop-shadow(-10px 20px 20px rgba(0,0,0,0.15));
+    }
+
+    .phone-front {
+        transform: translateX(120px) translateY(20px);
+        z-index: 2;
+        filter: drop-shadow(15px 30px 30px rgba(0,0,0,0.25));
+    }
+
+    .hero-phones:hover .phone-back {
+        transform: translateX(-70px) translateY(-10px) scale(0.92) rotate(-3deg);
+        filter: drop-shadow(-15px 25px 25px rgba(0,0,0,0.2));
+    }
+
+    .hero-phones:hover .phone-front {
+        transform: translateX(150px) translateY(5px) scale(1.05);
+        filter: drop-shadow(20px 40px 40px rgba(0,0,0,0.3));
+    }
+
+    /* Full-Screen Content Sections */
+    .content-section {
+        padding: 80px 0;
+        background-color: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        border-top: 1px solid rgba(255, 255, 255, 0.5);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        min-height: 100vh; 
+        display: flex; 
+        align-items: center;
+    }
+
+    .content-section.alt-bg {
+        background-color: transparent;
+        border: none;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .section-header h2 {
+        font-size: 40px;
+        font-weight: 800;
+        margin-bottom: 15px;
+        letter-spacing: -1px;
+        color: #1a1a1a;
+    }
+
+    .section-header p {
+        font-size: 17px;
+        color: #555;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+    }
+
+    .service-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--glass-shadow);
+        padding: 40px;
+        border-radius: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(31, 38, 135, 0.12);
+    }
+
+    .service-icon {
+        width: 60px;
+        height: 60px;
+        background-color: rgba(224, 242, 255, 0.8);
+        border-radius: 15px;
+        margin-bottom: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #007bff;
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    .service-card h3 {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #1a1a1a;
+    }
+
+    .service-card p {
+        font-size: 15px;
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+    .arielus-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+    }
+
+    #about .arielus-grid {
+        grid-template-columns: 1.1fr 0.9fr; 
+    }
+
+    #about .arielus-graphic {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        padding: 0; 
+    }
+
+    #about .arielus-graphic img {
+        border-radius: 30px; 
+        box-shadow: 0 15px 40px rgba(31, 38, 135, 0.1); 
+    }
+
+    .arielus-content h2 {
+        font-size: 44px;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 25px;
+        letter-spacing: -1.5px;
+        color: #1a1a1a;
+    }
+
+    .arielus-content .accent {
+        color: #007bff;
+    }
+
+    .arielus-content p {
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+    .arielus-graphic {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--glass-shadow);
+        border-radius: 24px;
+    }
+
+    .arielus-graphic img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 12px;
+        object-fit: cover;
+    }
+
+    .product-slide {
+        display: none;
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    .product-slide.active {
+        display: block;
+    }
+
+    .product-controls {
+        margin-top: 20px; 
+        display: flex;
+        gap: 15px;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    footer {
+        padding: 60px 0;
+        background-color: #f7fbff;
+        border-top: 1px solid #e0f2ff;
+        text-align: center;
+    }
+
+    .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        text-align: left;
+        margin-bottom: 40px;
+    }
+
+    .footer-col h4 {
+        font-size: 18px;
+        color: #1a1a1a;
+        margin-bottom: 15px;
+        font-weight: 700;
+    }
+
+    .footer-col p, .footer-col a {
+        font-size: 14px;
+        color: #555;
+        line-height: 1.8;
+        display: block;
+        margin-bottom: 5px;
+        text-decoration: none;
+    }
+
+    .footer-col a:hover {
+        color: #007bff;
+    }
+
+    .copyright {
+        font-size: 13px;
+        color: #999;
+        padding-top: 20px;
+        border-top: 1px solid #e0f2ff;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+        .hero { min-height: auto; padding-top: 120px; padding-bottom: 60px; }
+        .hero .container { flex-direction: column; text-align: center; }
+        .hero-content { text-align: center; max-width: 100%; }
+        .hero-content .btn { margin: 5px; }
+        .hero h1 { font-size: 40px; }
+        .hero-graphic-container { margin-top: 30px; justify-content: center; padding-right: 0; }
+        .hero-phones { transform: translateX(0); } /* Reset phone pushing on smaller screens */
+
+        .arielus-grid { grid-template-columns: 1fr !important; text-align: center; } 
+        .footer-grid { text-align: center; }
+        .product-controls { justify-content: center; }
+    }
+
+    @media (max-width: 768px) {
+        nav { padding: 1rem; width: 95%; flex-wrap: wrap; justify-content: center; gap: 10px; position: absolute; }
+        .nav-links { display: none; }
+        .hero h1 { font-size: 32px; }
+        .section-header h2 { font-size: 32px; }
+        .services-grid { grid-template-columns: 1fr; }
+
+        .hero-phones { height: 420px; }
+        .phone-mockup { width: 180px; height: auto; border: none; background: transparent; }
+        
+        .phone-back { transform: translateX(-40px) scale(0.9); }
+        .phone-front { transform: translateX(50px) translateY(15px); }
+
+        .hero-phones:hover .phone-back { transform: translateX(-55px) translateY(-5px) scale(0.92) rotate(-3deg); }
+        .hero-phones:hover .phone-front { transform: translateX(65px) translateY(5px) scale(1.05); }
+    }
+</style>
+</head>
+<body>
+
+<nav class="glass">
+    <a href="#" class="logo">
+        <img src="assets/logo-icon.png" alt="Arielus Secondary Logo" style="height: 25px; width: auto; margin-right: -7px;">
+        <img src="assets/new-logo.png" alt="Arielus Software Logo">
+    </a>
+    <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#about">About</a>
+        <a href="#features">Features</a>
+        <a href="#components">Components</a>
+    </div>
+    <a href="#contact" class="nav-btn">Contact Us</a>
+</nav>
+
+<section class="hero">
+    <div class="container">
+        
+        <div class="hero-content">
+            <span class="hero-label">Arielus MoBo by Arielus Software Inc.</span>
+            <h1>Seamless <span style="color: #007bff;">Mobile Booking</span>. <br>Anytime, Anywhere.</h1>
+            <p>A complete ticketing and booking solution that works both online and offline.</p>
+            <div>
+                <a href="#contact" class="btn btn-primary">Get Started Today</a>
+                <a href="#contact" class="btn btn-outline">Request a Demo</a>
+            </div>
+        </div>
+        
+        <div class="hero-graphic-container" id="hero-animation-target">
+            <div class="hero-phones">
+                <div class="phone-mockup phone-back">
+                    <img src="assets/phone-one.png" alt="MoBo Mobile App - Boarding">
+                </div>
+                <div class="phone-mockup phone-front">
+                    <img src="assets/phone-two.png" alt="MoBo Mobile App - Passenger">
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</section>
+
+<section id="about" class="content-section">
+    <div class="container">
+        <div class="arielus-grid">
+            <div class="arielus-graphic">
+                <img src="assets/mobo-about.png" alt="MoBo Booking Platform Visualization">
+            </div>
+            <div class="arielus-content">
+                <h2>A unified <span class="accent">mobile booking platform.</span></h2>
+                <p>ArielusMOBO is a unified mobile booking platform designed for operators, agents, and users. Whether you’re online or offline, ArielusMOBO ensures smooth ticketing and booking experiences.</p>
+                <p>Built to be responsive on web and Android, with iOS coming soon.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="features" class="content-section alt-bg">
+    <div class="container">
+        <div class="section-header">
+            <h2>Key Features</h2>
+            <p>Built to keep your business moving, no matter the connectivity.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🌐</div>
+                <h3>Works Online & Offline</h3>
+                <p>Enjoy uninterrupted service and seamless operations even in low-connectivity areas.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📱</div>
+                <h3>Web & Android Responsive</h3>
+                <p>Accessible across devices, ensuring maximum reach and a fluid user experience.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🔒</div>
+                <h3>Secure & Scalable</h3>
+                <p>Built for businesses of all sizes, ensuring data protection and room for growth.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="components" class="content-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Platform Components</h2>
+            <p>Four distinct modules to empower your complete booking ecosystem. ArielusMOBO connects all stakeholders in the booking ecosystem. Agents issue tickets, operators manage schedules, users book seamlessly, and admins oversee everything — all in one integrated platform.</p>
+        </div>
+        
+        <div id="product-carousel">
+            <div class="product-slide active">
+                <div class="arielus-grid">
+                    <div class="arielus-graphic">
+                        <img src="assets/ticketing-agent.png" alt="MoBo Ticketing Agent App">
+                    </div>
+                    <div class="arielus-content">
+                        <h2><span class="accent">Ticketing Agent</span></h2>
+                        <p>Empower agents with fast, reliable ticketing tools. Issue tickets, manage reservations, and serve customers efficiently — even without internet access.</p>
+                        <div class="product-controls">
+                            <button class="btn btn-outline prev-btn">Previous</button>
+                            <button class="btn btn-primary next-btn">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-slide">
+                <div class="arielus-grid">
+                    <div class="arielus-graphic">
+                        <img src="assets/operator-app.png" alt="MoBo Operator App">
+                    </div>
+                    <div class="arielus-content">
+                        <h2><span class="accent">Operator App</span></h2>
+                        <p>Operators can track schedules, monitor bookings, and manage fleet operations in real time. Designed specifically for mobility and ease of use.</p>
+                        <div class="product-controls">
+                            <button class="btn btn-outline prev-btn">Previous</button>
+                            <button class="btn btn-primary next-btn">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-slide">
+                <div class="arielus-grid">
+                    <div class="arielus-graphic">
+                        <img src="assets/user-app.png" alt="MoBo User App">
+                    </div>
+                    <div class="arielus-content">
+                        <h2><span class="accent">User App</span></h2>
+                        <p>Give your customers the power to book tickets anytime, anywhere. A user-friendly interface ensures a hassle-free experience, both online and offline.</p>
+                        <div class="product-controls">
+                            <button class="btn btn-outline prev-btn">Previous</button>
+                            <button class="btn btn-primary next-btn">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-slide">
+                <div class="arielus-grid">
+                    <div class="arielus-graphic">
+                        <img src="assets/admin-portal.png" alt="MoBo Admin Portal Dashboard">
+                    </div>
+                    <div class="arielus-content">
+                        <h2><span class="accent">Admin Portal</span></h2>
+                        <p>Centralized control for administrators. Manage agents, operators, and users with powerful analytics, reporting, and configuration tools.</p>
+                        <div class="product-controls">
+                            <button class="btn btn-outline prev-btn">Previous</button>
+                            <button class="btn btn-primary next-btn">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section id="cta" class="content-section alt-bg">
+    <div class="container" style="text-align: center; max-width: 800px;">
+        <div class="glass" style="padding: 50px 30px; border-radius: 24px;">
+            <h3 style="font-size: 28px; margin-bottom: 15px; font-weight: 800; color: #1a1a1a;">Ready to transform your booking experience?</h3>
+            <p style="color: #555; margin-bottom: 30px; font-size: 16px;">Contact Arielus Software Inc. today and discover how ArielusMOBO can power your business.</p>
+            <a href="#contact" class="btn btn-primary">Contact Us Now</a>
+        </div>
+    </div>
+</section>
+
+<footer id="contact">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <img src="assets/logo-alt.png" alt="Arielus Software Inc. Logo" style="height: 30px; margin-bottom: 10px;">
+                <p>Email: info@arielussoftware.com</p>
+                <p>We are your Digital Transformation Partner.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Cebu Office</h4>
+                <p>3F Centro Maximo II Building</p>
+                <p>D. Jakosalem St., Cebu City</p>
+                <p>Philippines</p>
+                <p>(32)-888-9448</p>    
+            </div>
+            <div class="footer-col">
+                <h4>Vancouver Office</h4>
+                <p>1400 - 777 Dunsmuir St.</p>
+                <p>Vancouver, BC</p>
+                <p>Canada</p>
+                <p>(+1)(778) 859-5476</p>
+            </div>
+            <div class="footer-col">
+                <h4>Downloads & Links</h4>
+                <a href="#">Company Presentation / Brochure</a>
+                <a href="#">Company Profile</a>
+            </div>
+        </div>
+        <p class="copyright">&copy; Arielus Software Inc. 2024. All rights reserved.</p>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const slides = document.querySelectorAll('.product-slide');
+        const prevBtns = document.querySelectorAll('.prev-btn');
+        const nextBtns = document.querySelectorAll('.next-btn');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+        }
+
+        nextBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            });
+        });
+
+        prevBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                showSlide(currentSlide);
+            });
+        });
+
+        const heroAnimTarget = document.getElementById('hero-animation-target');
+
+        function animateHeroOnScroll() {
+            const scrolled = window.scrollY;
+            if (scrolled < 800 && heroAnimTarget) {
+                const moveY = scrolled * 0.15; 
+                heroAnimTarget.style.transform = `translateY(${moveY}px)`;
+            }
+        }
+
+        animateHeroOnScroll();
+        window.addEventListener('scroll', animateHeroOnScroll);
+    });
+</script>
+</body>
+</html>
